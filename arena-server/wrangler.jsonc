@@ -1,0 +1,9 @@
+{
+  "name": "overtime-arena",
+  "main": "worker.js",
+  "compatibility_date": "2025-06-01",
+  "assets": { "directory": "../dist", "binding": "ASSETS", "run_worker_first": true },
+  "durable_objects": { "bindings": [{ "name": "EVENTS", "class_name": "ArenaEvent" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ArenaEvent"] }],
+  "vars": { "ARENA_EVENT_ID": "exhibition-001" }
+}

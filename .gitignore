@@ -5,3 +5,7 @@ private-data/
 *.xlsx
 *.zip
 *.tar.gz
+
+.arena-local/
+.dev.vars
+.wrangler/

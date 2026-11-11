@@ -1,0 +1,99 @@
+{
+  "players": [
+    {
+      "id": "keller",
+      "name": "Alex Keller",
+      "number": 14,
+      "team": "ALP"
+    },
+    {
+      "id": "berger",
+      "name": "Noah Berger",
+      "number": 7,
+      "team": "ALP"
+    },
+    {
+      "id": "fischer",
+      "name": "Leo Fischer",
+      "number": 28,
+      "team": "ALP"
+    },
+    {
+      "id": "rossi",
+      "name": "Sam Rossi",
+      "number": 41,
+      "team": "ALP"
+    },
+    {
+      "id": "brooks",
+      "name": "Jamie Brooks",
+      "number": 9,
+      "team": "COL"
+    },
+    {
+      "id": "morgan",
+      "name": "Casey Morgan",
+      "number": 22,
+      "team": "COL"
+    },
+    {
+      "id": "hayes",
+      "name": "Robin Hayes",
+      "number": 16,
+      "team": "COL"
+    },
+    {
+      "id": "carter",
+      "name": "Max Carter",
+      "number": 35,
+      "team": "COL"
+    }
+  ],
+  "round": [
+    [
+      "Who hit the higher top speed?",
+      "km/h",
+      "rossi",
+      38.1,
+      "hayes",
+      37.4,
+      "A burst of speed can decide who reaches a loose puck. Peak speed measures the burst, not the whole race."
+    ],
+    [
+      "Who covered more ice?",
+      "m",
+      "fischer",
+      1670,
+      "brooks",
+      1720,
+      "A winger who races back to cover an opponent adds distance without touching the puck. Distance also depends on ice time."
+    ],
+    [
+      "Who blocked more shots?",
+      "blocks",
+      "berger",
+      2,
+      "fischer",
+      3,
+      "A defender in the shooting lane can stop an attempt before it reaches the goalie. A block is not necessarily a goal saved."
+    ],
+    [
+      "Who completed more passes?",
+      "passes",
+      "carter",
+      21,
+      "berger",
+      19,
+      "A short outlet pass can move a team out of trouble without earning an assist. A count alone cannot show where the puck went."
+    ],
+    [
+      "Who spent longer on the ice?",
+      "sec",
+      "morgan",
+      410,
+      "keller",
+      380,
+      "Time on ice is opportunity. Watch who stays on for an extra shift; the total alone cannot tell you how well they played."
+    ]
+  ]
+}

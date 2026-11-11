@@ -2,17 +2,22 @@
 from pathlib import Path
 import hashlib,json,re
 root=Path(__file__).resolve().parents[1]/'dist'
-files=sorted([p for p in root.iterdir() if p.name!='arena-worker.js' and p.suffix in {'.html','.css','.js','.svg'}])
+files=sorted([p for p in root.iterdir() if p.name!='arena-worker.js' and p.suffix in {'.html','.css','.js','.svg','.json'}])
 # Pin the full ES module graph: a returning fan must never play a prior deck against a new rival target.
 js=[p for p in files if p.suffix=='.js']
 tag=hashlib.sha256(b''.join(p.name.encode()+p.read_bytes() for p in js)).hexdigest()[:12]
 imports={'./'+p.name:'./'+p.name+'?r='+tag for p in js}
 imports_script='<script type="importmap">'+json.dumps({'imports':imports},separators=(',',':'))+'</script>'
-index=root/'index.html'
-html=re.sub(r'<script type="importmap">.*?</script>','',index.read_text(),flags=re.S)
-html=html.replace('</head>',imports_script+'</head>')
-html=re.sub(r'src="app.js[^"]*"','src="app.js?r='+tag+'"',html)
-index.write_text(html)
+for filename,entry in [('index.html','arena-app.js'),('lab.html','app.js')]:
+    index=root/filename
+    html=re.sub(r'<script type="importmap">.*?</script>','',index.read_text(),flags=re.S)
+    html=html.replace('</head>',imports_script+'</head>')
+    html=re.sub(r'src="'+re.escape(entry)+r'[^"]*"','src="'+entry+'?r='+tag+'"',html)
+    def style(m):
+        name=m[1]
+        return 'href="'+name+'?r='+hashlib.sha256((root/name).read_bytes()).hexdigest()[:12]+'"'
+    html=re.sub(r'href="([\w-]+\.css)(?:\?[^"]*)?"',style,html)
+    index.write_text(html)
 h=hashlib.sha256()
 for p in files:
     h.update(p.name.encode()+b'\0'+p.read_bytes())
