@@ -32,3 +32,13 @@ The goalkeeper CSVs use different fields and scopes and are not suitable skater 
 - Mystery: a win earns max(20, 100 − 20 × previous wrong guesses − 15 × extra clues). A loss earns zero. Four guesses; at most three clues. The answer is a deterministic daily choice in Zurich time, with manually advanced practice rounds.
 
 Scores are computed in the browser and are inspectable and modifiable. They are not suitable for prizes or a trusted competition.
+
+## Illustrated play pack (games 4–6)
+
+`dist/plays.js` contains three manually authored synthetic plays with normalised illustration coordinates (0–100), keyframes and an explicitly authored event order. It contains no recorded match paths. Positions between frames are linearly interpolated for visual explanation, not recovered tracking samples. Each play highlights a particular observed action in the illustration rather than computing a unique causal MVP.
+
+Games 4 and 5 share the illustrations to test different interactions. Spot the Difference awards 100 points for each correct player, maximum 300. Chain Reaction awards 100 on the first correct ordering, 60 after one incorrect check, and 20 after two or more; requesting the sequence after two failed checks earns 20. Replaying an animation does not award points.
+
+Game 6 uses explicitly synthetic probabilities, positions and fixed illustrative goal/miss outcomes. Answers are based on the larger probability, independently of the fixed outcome. It awards 100 per correct choice, maximum 300. The illustrated probability values are not Wisehockey xG and are not a calibrated model. No claim about real shot outcomes is made.
+
+Importing a player table does not supply event chronology, paths or shot probabilities and therefore never changes games 4–6. Before a real-match submission, use permitted event exports and footage to verify each authored sequence; do not infer real paths from aggregate totals.

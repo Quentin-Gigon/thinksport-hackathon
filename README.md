@@ -1,8 +1,8 @@
 # Overtime — ThinkSport prototype lab
 
-**[Play all three prototypes](https://quentin-gigon.github.io/thinksport-hackathon/)**
+**[Play all six prototypes](https://quentin-gigon.github.io/thinksport-hackathon/)**
 
-Three working browser games to compare at the team's 11 November 2026 meeting. No install, account, API key or backend is needed. Public fixtures contain **fictional players and synthetic statistics**, not the supplied confidential hockey records.
+Six working browser games to compare at the team's 11 November 2026 meeting. No install, account, API key or backend is needed. Public fixtures contain **fictional players and synthetic statistics**, not the supplied confidential hockey records.
 
 ## Play locally
 
@@ -12,15 +12,18 @@ python3 -m http.server 4173 --directory dist
 
 Open http://localhost:4173. ES modules require an HTTP server; double-clicking index.html is not supported. Any static host can serve `dist/`. External Google Fonts are optional; system font fallbacks work without internet.
 
-## The three experiments
+## The six experiments
 
 | Prototype | Core action | Learning | Hypothesis |
 | --- | --- | --- | --- |
 | Read the game | Answer five multiple-choice questions; reveal stats and explanations | Speed, passing, blocked shots, distance and ice time describe different contributions | Immediate explanation makes a short intermission quiz worth finishing |
 | Unsung heroes | Draft any three skaters within 50 credits; compare against the best affordable lineup | Contributions beyond goals and the trade-offs of a composite score | Building a lineup creates more ownership and replay than trivia |
 | Mystery skater | Use a roster and three progressively unlocked clues to identify a player in four guesses | Player identity can emerge from performance characteristics | A daily deduction puzzle creates a simple return habit |
+| Spot the Difference | Watch an animated play, choose one of three players, reveal the contribution | Passing, puck recovery and blocking matter beyond goals | A visual reveal rewards both newcomers and experts |
+| Chain Reaction | Tap three event cards into chronological order | The final action depends on earlier contributions | Reconstructing a play makes its story memorable |
+| Chance or Luck? | Compare two shot diagrams and pick the better chance | Probability and observed outcome are different | A surprising reveal makes statistical learning playful |
 
-All games include completion, score, replay and local feedback. Mystery uses the Europe/Zurich calendar date for the initial puzzle; practice rotates through players. Quiz is full-game recall, **not** a live prediction. Fantasy uses visible full-game stats, **not** forecasts or a validated ranking. The scoring formula and prices are shown in the game. Mystery has no AI or fabricated crowd popularity score.
+All games include completion, score, replay and local feedback. Games 1–3 follow the team brainstorming ideas; games 4–6 are additional experiments. See [the six-concept judging scorecard](docs/CONCEPT_SCORECARD.md) for candid scoring and next steps. Mystery uses the Europe/Zurich calendar date for the initial puzzle; practice rotates through players. Quiz is full-game recall, **not** a live prediction. Fantasy uses visible full-game stats, **not** forecasts or a validated ranking. The scoring formula and prices are shown in the game. Mystery has no AI or fabricated crowd popularity score.
 
 ## Tonight's test
 
@@ -30,7 +33,7 @@ Follow [docs/MEETING_TEST.md](docs/MEETING_TEST.md). Each person should play all
 
 See [docs/DATA.md](docs/DATA.md) and [docs/SOURCES.md](docs/SOURCES.md). The organisers' supplied match data is confidential. Do not commit or deploy original files or private derived match records. The ignored `private-data/` directory is a place for team-only local files.
 
-For private testing, open **Data & rules**, then import a JSON array matching [docs/player-template.json](docs/player-template.json). Imported data stays in this tab's memory, resets on refresh and is never sent to a server. The public JavaScript still downloads normally, and the optional Google Fonts request is independent of imported content. Keep browser extensions and screen sharing in mind when handling confidential material. Feedback exports include tester-entered notes, so check those before sharing.
+For private testing, open **Data & rules**, then import a JSON array matching [docs/player-template.json](docs/player-template.json). Imported data changes games 1–3 only, stays in this tab's memory, resets on refresh and is never sent to a server. Games 4–6 always use synthetic plays and illustrative probabilities. The public JavaScript still downloads normally, and the optional Google Fonts request is independent of imported content. Keep browser extensions and screen sharing in mind when handling confidential material. Feedback exports include tester-entered notes, so check those before sharing.
 
 ## Verification
 
@@ -41,7 +44,7 @@ node --test tests/*.test.js
 node --check dist/app.js
 ```
 
-Tests verify quiz answers, an independently enumerated fantasy optimum, mystery scoring, Zurich daily selection and import validation. Browser verification results are in [docs/QA.md](docs/QA.md).
+Tests verify quiz answers, an independently enumerated fantasy optimum, mystery scoring, Zurich daily selection, import validation, animation frames, chronological ordering and probability-based answers. Browser verification results are in [docs/QA.md](docs/QA.md).
 
 ## Scope after selection
 
