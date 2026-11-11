@@ -1,5 +1,7 @@
 # Overtime — ThinkSport prototype lab
 
+**[Play all three prototypes](https://quentin-gigon.github.io/thinksport-hackathon/)**
+
 Three working browser games to compare at the team's 11 November 2026 meeting. No install, account, API key or backend is needed. Public fixtures contain **fictional players and synthetic statistics**, not the supplied confidential hockey records.
 
 ## Play locally

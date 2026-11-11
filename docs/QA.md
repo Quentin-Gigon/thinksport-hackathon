@@ -10,6 +10,8 @@ In-app browser exercised:
 - Fantasy rejected an over-budget selection, allowed deselect/reselect, and produced the independently verified optimal score of 232 at 50 credits.
 - Mystery wrong guess plus one extra clue reduced potential points from 100 to 65; correct second guess finished at 65. A practice round could start.
 - Notebook clear removed the disposable QA response.
+- File-picker JSON import accepted the synthetic template, and restoring the demo worked.
+- The narrow viewport had no horizontal document overflow; browser error logs were empty.
 
 The private imported fixture was validated as 40 skaters with the same data contract; source files are Git-ignored. Public fixtures and deployment contain synthetic data only.
 
