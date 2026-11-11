@@ -19,21 +19,21 @@ Open http://localhost:4173. ES modules require an HTTP server; double-clicking i
 | Read the game | Answer five multiple-choice questions; reveal stats and explanations | Speed, passing, blocked shots, distance and ice time describe different contributions | Immediate explanation makes a short intermission quiz worth finishing |
 | Unsung heroes | Draft any three skaters within 50 credits; compare against the best affordable lineup | Contributions beyond goals and the trade-offs of a composite score | Building a lineup creates more ownership and replay than trivia |
 | Mystery skater | Use a roster and three progressively unlocked clues to identify a player in four guesses | Player identity can emerge from performance characteristics | A daily deduction puzzle creates a simple return habit |
-| Spot the Difference | Watch an animated play, choose one of three players, reveal the contribution | Passing, puck recovery and blocking matter beyond goals | A visual reveal rewards both newcomers and experts |
-| Chain Reaction | Tap three event cards into chronological order | The final action depends on earlier contributions | Reconstructing a play makes its story memorable |
-| Chance or Luck? | Compare two shot diagrams and pick the better chance | Probability and observed outcome are different | A surprising reveal makes statistical learning playful |
+| Head-to-Head | Lock five blind two-player period-one stat comparisons | Observations help estimate hidden speed, distance, blocks, passes and usage | A close numerical reveal rewards attentive watching |
+| Against the Crowd | 2–8 fans pass one device and lock three private picks before any reveal | Popularity does not establish the correct answer | A capped minority bonus creates discussion without rewarding incorrect contrarian picks |
+| Next-Period Draft | Choose three skaters under 50 credits, then simulate period-two settlement | Blocks, completed passes and distance contribute beyond goals | A future-period lineup gives fans players to follow |
 
-All games include completion, score, replay and local feedback. Games 1–3 follow the team brainstorming ideas; games 4–6 are additional experiments. See [the six-concept judging scorecard](docs/CONCEPT_SCORECARD.md) for candid scoring and next steps. Mystery uses the Europe/Zurich calendar date for the initial puzzle; practice rotates through players. Quiz is full-game recall, **not** a live prediction. Fantasy uses visible full-game stats, **not** forecasts or a validated ranking. The scoring formula and prices are shown in the game. Mystery has no AI or fabricated crowd popularity score.
+All games include completion, score, replay and local feedback. Games 1–3 follow the team brainstorming ideas; games 4–6 are additional experiments. See [the matchday guide](docs/MATCHDAY.md) for the replacement games and production requirements. The earlier concept scorecard describes retired experiments. Mystery uses the Europe/Zurich calendar date for the initial puzzle; practice rotates through players. Quiz is full-game recall, **not** a live prediction. Fantasy uses visible full-game stats, **not** forecasts or a validated ranking. The scoring formula and prices are shown in the game. Mystery has no AI or fabricated crowd popularity score.
 
 ## Tonight's test
 
-Follow [docs/MEETING_TEST.md](docs/MEETING_TEST.md). Each person should play all three before discussing. Rate fun, clarity and desire to replay on the result screen. The test notebook stores responses in this browser only and exports JSON. Devices do not synchronize; there are no real-time rooms, accounts or shared leaderboards.
+Follow [docs/MEETING_TEST.md](docs/MEETING_TEST.md). Each person should play all six before discussing. Rate fun, clarity and desire to replay on the result screen. The test notebook stores responses in this browser only and exports JSON. Devices do not synchronize; there are no real-time rooms, accounts or shared leaderboards.
 
 ## Data and confidentiality
 
 See [docs/DATA.md](docs/DATA.md) and [docs/SOURCES.md](docs/SOURCES.md). The organisers' supplied match data is confidential. Do not commit or deploy original files or private derived match records. The ignored `private-data/` directory is a place for team-only local files.
 
-For private testing, open **Data & rules**, then import a JSON array matching [docs/player-template.json](docs/player-template.json). Imported data changes games 1–3 only, stays in this tab's memory, resets on refresh and is never sent to a server. Games 4–6 always use synthetic plays and illustrative probabilities. The public JavaScript still downloads normally, and the optional Google Fonts request is independent of imported content. Keep browser extensions and screen sharing in mind when handling confidential material. Feedback exports include tester-entered notes, so check those before sharing.
+For private testing, open **Data & rules**, then import a JSON array matching [docs/player-template.json](docs/player-template.json). Imported data changes games 1–3 only, stays in this tab's memory, resets on refresh and is never sent to a server. Games 4–6 use separate fictional period-one/period-two fixtures. Crowd votes are real inputs from people sharing one device. The public JavaScript still downloads normally, and the optional Google Fonts request is independent of imported content. Keep browser extensions and screen sharing in mind when handling confidential material. Feedback exports include tester-entered notes, so check those before sharing.
 
 ## Verification
 
@@ -44,7 +44,7 @@ node --test tests/*.test.js
 node --check dist/app.js
 ```
 
-Tests verify quiz answers, an independently enumerated fantasy optimum, mystery scoring, Zurich daily selection, import validation, animation frames, chronological ordering and probability-based answers. Browser verification results are in [docs/QA.md](docs/QA.md).
+Tests verify quiz answers, an independently enumerated fantasy optimum, mystery scoring, Zurich daily selection, import validation, period-one duels, minority bonuses, draft budget enforcement and future-period scoring. Legacy play-engine tests remain as regression coverage. Browser verification results are in [docs/QA.md](docs/QA.md).
 
 ## Scope after selection
 

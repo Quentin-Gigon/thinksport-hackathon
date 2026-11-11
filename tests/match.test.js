@@ -1,0 +1,7 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {SKATERS,DUELS,CROWD,winners,crowdPoints,draftResult,periodPoints,bestDraft} from '../dist/match-engine.js';
+test('every duel has two real skaters and an unambiguous period-one winner',()=>{for(const q of DUELS){assert.equal(q.pair.length,2);assert.equal(winners(q.pair,q.key).length,1);}});
+test('crowd rewards correct minority without awarding wrong contrarian guesses',()=>{const q=CROWD[0],win=winners(q.ids,q.key)[0],wrong=q.ids.find(x=>x!==win);assert.equal(crowdPoints(win,[win,wrong,wrong,wrong],q.ids,q.key),138);assert.equal(crowdPoints(wrong,[win,wrong,wrong,wrong],q.ids,q.key),0);assert.equal(crowdPoints(win,[win,win],q.ids,q.key),100);assert.equal(crowdPoints(win,[],q.ids,q.key),0);});
+test('draft enforces unique picks and budget with future-only scoring',()=>{assert.equal(draftResult(['keller','rossi','brooks']).valid,false);assert.equal(draftResult(['berger','fischer','carter']).valid,true);assert.equal(draftResult(['berger','berger','carter']).valid,false);assert.equal(draftResult(['missing','berger','carter']).valid,false);const r=draftResult(['berger','fischer','carter']);assert.equal(r.points,62+52+60);assert.equal(periodPoints({blocks:2,passes:10,distance:199}),31);});
+test('optimal future draft is affordable and no valid line beats it',()=>{const best=bestDraft();assert.equal(best.valid,true);for(const a of SKATERS)for(const b of SKATERS)for(const c of SKATERS){const r=draftResult([a.id,b.id,c.id]);if(r.valid)assert.ok(r.points<=best.points);}});

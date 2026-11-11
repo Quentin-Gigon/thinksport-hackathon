@@ -1,3 +1,13 @@
+## Matchday replacement release — 11 November 2026
+
+- 13 automated test groups pass, including new duel, crowd and draft scoring tests.
+- Browser: full five-duel run (3/5, 300 points); two-fan, three-question crowd run (375 versus 0, with 125-point minority-correct awards); draft over-budget rejection followed by a valid 50-credit lineup and 120-point future-period settlement.
+- Verified pre-vote crowd DOM contains no hidden answer values; no reveals until all six votes are sealed.
+- All six routes and home have no horizontal overflow at 375px. Inspected mobile duel screenshot and desktop broadcast layout. No browser console errors during the flows.
+- No audience trial, live feed or cross-device room tested. Fixtures are fictional. Current-round progress is session memory, reset on refresh or leaving the game.
+
+---
+
 # Verification — 11 November 2026
 
 Passed five Node test groups: quiz options/answers, independently enumerated fantasy budget optimum, mystery scoring, Zurich calendar selection and import validation. JavaScript syntax checks pass.
