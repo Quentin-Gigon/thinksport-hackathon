@@ -1,0 +1,98 @@
+[
+  {
+    "id": "p1",
+    "name": "Alex Keller",
+    "team": "Alpine HC",
+    "jersey": 14,
+    "speed": 36.2,
+    "passes": 88,
+    "blocks": 1,
+    "distance": 3900,
+    "toi": 990,
+    "goals": 2
+  },
+  {
+    "id": "p2",
+    "name": "Noah Berger",
+    "team": "Alpine HC",
+    "jersey": 7,
+    "speed": 33.1,
+    "passes": 95,
+    "blocks": 2,
+    "distance": 4300,
+    "toi": 1200,
+    "goals": 0
+  },
+  {
+    "id": "p3",
+    "name": "Leo Fischer",
+    "team": "Alpine HC",
+    "jersey": 28,
+    "speed": 34.6,
+    "passes": 81,
+    "blocks": 5,
+    "distance": 4800,
+    "toi": 1380,
+    "goals": 0
+  },
+  {
+    "id": "p4",
+    "name": "Sam Rossi",
+    "team": "Alpine HC",
+    "jersey": 41,
+    "speed": 38.1,
+    "passes": 76,
+    "blocks": 0,
+    "distance": 4100,
+    "toi": 1020,
+    "goals": 1
+  },
+  {
+    "id": "p5",
+    "name": "Jamie Brooks",
+    "team": "College Select",
+    "jersey": 9,
+    "speed": 35.4,
+    "passes": 91,
+    "blocks": 3,
+    "distance": 5100,
+    "toi": 1320,
+    "goals": 1
+  },
+  {
+    "id": "p6",
+    "name": "Casey Morgan",
+    "team": "College Select",
+    "jersey": 22,
+    "speed": 32.8,
+    "passes": 86,
+    "blocks": 4,
+    "distance": 4600,
+    "toi": 1260,
+    "goals": 0
+  },
+  {
+    "id": "p7",
+    "name": "Robin Hayes",
+    "team": "College Select",
+    "jersey": 16,
+    "speed": 37.4,
+    "passes": 79,
+    "blocks": 1,
+    "distance": 3700,
+    "toi": 900,
+    "goals": 2
+  },
+  {
+    "id": "p8",
+    "name": "Max Carter",
+    "team": "College Select",
+    "jersey": 35,
+    "speed": 34.2,
+    "passes": 93,
+    "blocks": 2,
+    "distance": 5400,
+    "toi": 1440,
+    "goals": 0
+  }
+]
