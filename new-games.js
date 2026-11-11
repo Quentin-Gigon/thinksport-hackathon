@@ -1,3 +1,4 @@
+import {startDuelCard,finishDuelCard,DUEL_CARD_COUNT} from './duel-decks.js';
 import {drawDraft,bindDraft,restoreDraft} from './draft-mission.js';
 import {settleDuel,callScreen,scoutCard,duelShareCard} from './duel.js';
 import {draftStory,duelStory} from './ice-stories.js';
@@ -12,20 +13,20 @@ const audioKey='ot-arena-audio', draftKey='ot-demo001-locked-line-v1';
 let sound=false,ctx;try{sound=localStorage.getItem(audioKey)==='on'}catch{}
 function chime(notes){if(!sound)return;try{ctx??=new (window.AudioContext||window.webkitAudioContext)();ctx.resume().catch(()=>{});notes.forEach((hz,i)=>{const t=ctx.currentTime+i*.085,o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=hz;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.065,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+.15);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.16);});}catch{}}
 const cues={speed:'Look for a short sprint into open ice.',distance:'Think back to repeated end-to-end shifts.',blocks:'Who stepped into the shooting lane?',passes:'Who kept the puck moving out of traffic?',toi:'Who kept coming back over the boards?'};
-function saveLine(s){try{localStorage.setItem(draftKey,JSON.stringify({ids:s.ids,step:s.step,call:s.call}));}catch{}}
-export function createNewGames({root,wrapper,finish,rerender,onComplete}){
+function saveLine(s){try{localStorage.setItem(draftKey,JSON.stringify({ids:s.ids,step:s.step,call:s.call,challenge:s.challenge}));}catch{}}
+export function createNewGames({root,wrapper,finish,rerender,onComplete,onRestart}){
  let id,s;
  const redraw=()=>{rerender();};
- function start(game){id=game;s={i:0,points:0,pick:null,revealed:false,history:[],stage:'setup',fans:[],votes:[],fan:0,ids:[],message:'',step:0};if(game==='draft'){try{const d=JSON.parse(localStorage.getItem(draftKey));const restored=restoreDraft(d);if(restored)Object.assign(s,restored);}catch{}}}
+ function start(game){id=game;s={i:0,points:0,pick:null,revealed:false,history:[],stage:'setup',fans:[],votes:[],fan:0,ids:[],message:'',step:0};if(game==='duel')s.cardId=startDuelCard(globalThis.location?.search);if(game==='draft'){try{const d=JSON.parse(localStorage.getItem(draftKey));const restored=restoreDraft(d);if(restored)Object.assign(s,restored);}catch{}}}
  function complete(title,desc,score=s.points){onComplete({game:id,score});return wrapper(id,'Your eyes. The match. The numbers.',score,finish(title,String(score)+' PTS',desc));}
  function view(game){id=game;return game==='duel'?duel():game==='crowd'?crowd():draft();}
  function shell(desc,content,phase){return `<div class="broadcast ${id}">${wrapper(id,desc,s.points,(id==='crowd'?matchbar(phase):`<div class="arena-rail"><b>ALP 1 : 1 COL</b><span>${phase||'FIRST BREAK'} · DEMO</span><button id="arena-audio" aria-pressed="${sound}">Sound ${sound?'on':'off'}</button></div>`)+content)}</div>`;}
  function playerButton(p,attr,selected=false,extra=''){return `<button class="ice-player ${selected?'chosen':''}" ${attr} aria-pressed="${selected}">${kit(p)}<span class="player-meta">${p.team} / ${p.role}</span><strong>${p.name}</strong>${extra}<span class="pick-label">${selected?'✓ SELECTED':'MAKE THE CALL ↗'}</span></button>`;}
  function duel(){
   if(s.i===DUELS.length){
-    onComplete({game:id,score:s.points});
+    onComplete({game:id,score:s.points,cardId:s.cardId});
     const hits=s.history.filter(h=>h.correct).length;
-    return `<div class="broadcast duel">${wrapper(id,'Five calls from the first period.',s.points,finish('Your scouting card',s.points+' PTS',`${hits} of 5 correct.`,scoutCard(s.history)+duelShareCard(s.history,s.points)))}</div>`;
+    return `<div class="broadcast duel">${wrapper(id,'Five calls from the first period.',s.points,finish('Your scouting card',s.points+' PTS',`${hits} of 5 correct. Play again for five different matchups · ${DUEL_CARD_COUNT} cards in rotation.`,scoutCard(s.history)+duelShareCard(s.history,s.points)))}</div>`;
   }
   return shell('Pick a jersey, then lock your call. One correct pick earns 100 points.',callScreen(s,playerButton));
  }
@@ -39,8 +40,8 @@ export function createNewGames({root,wrapper,finish,rerender,onComplete}){
  function draft(){return drawDraft(s,{shell,finish,wrapper,onComplete});}
  function bind(){const audio=root.querySelector('#arena-audio');if(audio)audio.onclick=()=>{sound=!sound;try{localStorage.setItem(audioKey,sound?'on':'off')}catch{}audio.setAttribute('aria-pressed',String(sound));audio.textContent='Sound '+(sound?'on':'off');chime([440,660]);};const on=(sel,fn)=>{const el=root.querySelector(sel);if(el)el.onclick=fn;};root.querySelectorAll('[data-duel]').forEach(b=>b.onclick=()=>{if(s.revealed)return;s.pick=b.dataset.duel;redraw();root.querySelector('[data-duel="'+s.pick+'"]')?.focus({preventScroll:true});});
  on('#arm-power',()=>{if(s.revealed||s.history.some(h=>h.boosted))return;s.armed=!s.armed;redraw();root.querySelector('#arm-power')?.focus({preventScroll:true});});
- on('#lock-duel',()=>{if(s.revealed)return;const h=settleDuel(s.history,s.pick,s.armed);if(!h)return;s.revealed=true;s.history.push(h);s.points+=h.points;chime(h.correct?(h.boosted?[523,659,784,1047]:[523,659,784]):[392,330]);redraw();root.querySelector('#duel-heading')?.focus();});
- on('#duel-next',()=>{if(!s.revealed)return;s.i++;s.pick=null;s.armed=false;s.revealed=false;redraw();root.querySelector('#duel-heading')?.focus();});const form=root.querySelector('#crowd-start');if(form)form.onsubmit=e=>{e.preventDefault();const n=Number(root.querySelector('#fan-count').value);s.fans=Array.from({length:n},(_,i)=>i+1);s.votes=s.fans.map(()=>[]);s.stage='handoff';redraw();};on('#fan-ready',()=>{s.stage='vote';redraw();});root.querySelectorAll('[data-vote]').forEach(b=>b.onclick=()=>{s.pick=b.dataset.vote;redraw();});on('#lock-vote',()=>{if(!s.pick)return;s.votes[s.fan].push(s.pick);s.pick=null;s.i++;if(s.i===3){s.i=0;s.fan++;s.stage=s.fan===s.fans.length?'sealed':'handoff';}redraw();});on('#crowd-reveal',()=>{s.stage='result';redraw();});on('#crowd-next',()=>{s.i++;if(s.i===3)s.stage='done';redraw();});if(id==='draft')bindDraft(s,{root,redraw,saveLine,clearLine:()=>{try{localStorage.removeItem(draftKey)}catch{}},chime});}
+ on('#lock-duel',()=>{if(s.revealed)return;const h=settleDuel(s.history,s.pick,s.armed,s.cardId);if(!h)return;s.revealed=true;s.history.push(h);s.points+=h.points;chime(h.correct?(h.boosted?[523,659,784,1047]:[523,659,784]):[392,330]);redraw();root.querySelector('#duel-heading')?.focus();});
+ on('#duel-next',()=>{if(!s.revealed)return;s.i++;if(s.i===DUELS.length)finishDuelCard(s.cardId);s.pick=null;s.armed=false;s.revealed=false;redraw();root.querySelector('#duel-heading')?.focus();});const form=root.querySelector('#crowd-start');if(form)form.onsubmit=e=>{e.preventDefault();const n=Number(root.querySelector('#fan-count').value);s.fans=Array.from({length:n},(_,i)=>i+1);s.votes=s.fans.map(()=>[]);s.stage='handoff';redraw();};on('#fan-ready',()=>{s.stage='vote';redraw();});root.querySelectorAll('[data-vote]').forEach(b=>b.onclick=()=>{s.pick=b.dataset.vote;redraw();});on('#lock-vote',()=>{if(!s.pick)return;s.votes[s.fan].push(s.pick);s.pick=null;s.i++;if(s.i===3){s.i=0;s.fan++;s.stage=s.fan===s.fans.length?'sealed':'handoff';}redraw();});on('#crowd-reveal',()=>{s.stage='result';redraw();});on('#crowd-next',()=>{s.i++;if(s.i===3)s.stage='done';redraw();});if(id==='draft')bindDraft(s,{root,redraw,saveLine,onRestart,clearLine:()=>{try{localStorage.removeItem(draftKey)}catch{}},chime});}
 
  return {start,view,bind,stop(){}};
 }

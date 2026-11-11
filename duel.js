@@ -1,3 +1,4 @@
+import {cardNumber,duelDeck} from './duel-decks.js';
 import {shareCardButton} from './scout-share.js';
 import {DUELS,METRICS,skater,winners} from './match-engine.js';
 import {duelStory} from './ice-stories.js';
@@ -17,11 +18,11 @@ const hint={
   toi:'Who kept coming back over the boards?'
 };
 const lastName=p=>p.name.split(' ').slice(-1)[0];
-export function settleDuel(history,pick,armed){
-  const q=DUELS[history.length];
+export function settleDuel(history,pick,armed,cardId=1){
+  const q=duelDeck(cardId)[history.length];
   if(!q||!q.pair.includes(pick))return null;
   const winner=winners(q.pair,q.key)[0],correct=pick===winner,boosted=!!armed&&!history.some(h=>h.boosted);
-  return {index:history.length,key:q.key,pick,winner,correct,boosted,points:correct?(boosted?200:100):0};
+  return {index:history.length,cardId,pair:[...q.pair],key:q.key,pick,winner,correct,boosted,points:correct?(boosted?200:100):0};
 }
 export function takeaway(history){
   return history.find(h=>h.boosted&&!h.correct)||history.find(h=>!h.correct)||history.find(h=>h.boosted)||history[0];
@@ -50,10 +51,10 @@ function reveal(s,q){
     <button class="primary next-call" id="duel-next">${s.i===DUELS.length-1?'Get my scouting card':'Next duel'} →</button></section>`;
 }
 export function callScreen(s,playerButton){
-  const q=DUELS[s.i];
+  const q=duelDeck(s.cardId)[s.i];
   if(s.revealed)return reveal(s,q);
   const spent=s.history.find(h=>h.boosted);
-  return `<section class="ice-stage scout-stage"><div class="call-label"><span>CALL ${String(s.i+1).padStart(2,'0')} / 05</span><span>PERIOD 01</span></div>
+  return `<section class="ice-stage scout-stage"><div class="call-label"><span>CALL ${String(s.i+1).padStart(2,'0')} / 05</span><span>CARD ${cardNumber(s.cardId||1)} · PERIOD 01</span></div>
     ${progress(s)}<h3 class="big-question" tabindex="-1" id="duel-heading">${q.q}</h3>
     <p class="scout-hint">${hint[q.key]}</p>
     <div class="duel-grid">${q.pair.map(pid=>playerButton(skater(pid),`data-duel="${pid}"`,s.pick===pid)).join('<span class="vs-badge" aria-hidden="true">VS</span>')}</div>
@@ -61,15 +62,15 @@ export function callScreen(s,playerButton){
     <button id="lock-duel" class="primary next-call" ${s.pick?'':'disabled'}>${s.pick?'Lock '+lastName(skater(s.pick))+' · '+(s.armed?200:100)+' pts if correct':'Pick a jersey first'} →</button>${s.i===0?'<ot-shift-scout></ot-shift-scout>':''}</section>`;
 }
 export function scoutCard(history){
-  const lesson=takeaway(history),target=skater(lesson.winner),q=DUELS[lesson.index],other=skater(q.pair.find(id=>id!==lesson.winner)),unit=lesson.key==='toi'?'min:sec':METRICS[lesson.key].unit;
-  return `<section class="scout-card"><div class="call-label"><span>SCOUTING CARD</span><span>FIRST INTERMISSION</span></div>
+  const lesson=takeaway(history),target=skater(lesson.winner),q=lesson,other=skater(q.pair.find(id=>id!==lesson.winner)),unit=lesson.key==='toi'?'min:sec':METRICS[lesson.key].unit;
+  return `<section class="scout-card"><div class="call-label"><span>SCOUTING CARD</span><span>CARD ${cardNumber(lesson.cardId)} · FIRST BREAK</span></div>
   <h4>One player to watch next.</h4><strong class="scout-watch">#${target.number} · ${target.name}</strong>
   <p>${watch[lesson.key]}</p><p class="scout-evidence">Your evidence: ${lastName(target)} ${scoreLine(q.key,target.p1[q.key])} vs ${lastName(other)} ${scoreLine(q.key,other.p1[q.key])} ${unit} · ${METRICS[q.key].label}.</p>
-  <a class="primary" href="#draft" data-watch-call="${lesson.index}">Draft my next-period line →</a>
+  <a class="primary" href="#draft" data-watch-call="${lesson.index}" data-duel-card="${lesson.cardId}">Draft my next-period line →</a>
   <details class="call-receipt"><summary>Review my five calls</summary><ol>${history.map(h=>`<li><span>${METRICS[h.key].label} ${h.boosted?'· 2×':''}<small>You: ${lastName(skater(h.pick))} · Higher stat: ${lastName(skater(h.winner))}</small></span><b>${h.correct?'✓':'×'} +${h.points}</b></li>`).join('')}</ol></details></section>`;
 }
 
 export function duelShareCard(history,score){
   const lesson=takeaway(history),p=skater(lesson.winner),hits=history.filter(h=>h.correct).length,boost=history.find(h=>h.boosted);
-  return shareCardButton({game:'Head-to-Head',score,headline:hits+' of 5 calls correct',lines:[boost?'Power Play: '+METRICS[boost.key].label+' · +'+boost.points+' pts':'Power Play held in reserve','Next watch: #'+p.number+' '+p.name,METRICS[lesson.key].label+': '+scoreLine(lesson.key,p.p1[lesson.key])+' '+(lesson.key==='toi'?'min:sec':METRICS[lesson.key].unit)],route:'duel'});
+  return shareCardButton({game:'Head-to-Head',score,headline:'Card '+cardNumber(lesson.cardId)+' · '+hits+'/5 correct',lines:[boost?'Power Play: '+METRICS[boost.key].label+' · +'+boost.points+' pts':'Power Play held in reserve','Next watch: #'+p.number+' '+p.name,METRICS[lesson.key].label+': '+scoreLine(lesson.key,p.p1[lesson.key])+' '+(lesson.key==='toi'?'min:sec':METRICS[lesson.key].unit)],route:'duel'});
 }
