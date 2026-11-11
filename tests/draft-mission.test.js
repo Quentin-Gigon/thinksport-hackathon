@@ -32,3 +32,17 @@ test('lock, pause and settle a scouting call without awarding phantom draft poin
  Object.assign(s,restoreDraft(saves.at(-1)));buttons.get('#draft-step').onclick();buttons.get('#draft-step').onclick();
  assert.match(view(),/My next-period line/);assert.equal(completed.score,147);assert.equal(clears,1);
 });
+
+import {COACH,benchmark,eligibleLine} from '../dist/draft-mission.js';
+test('coach rematch requires a forward under the smaller cap, never credits the normal optimum, and restores the mission',()=>{
+ const valid=['brooks','berger','carter'],over=['keller','brooks','carter'],noForward=['berger','fischer','carter'];
+ assert.equal(eligibleLine(over,undefined),true); assert.equal(eligibleLine(over,COACH),false);
+ assert.equal(eligibleLine(noForward,COACH),false);
+ assert.equal(eligibleLine(['brooks','morgan','carter'],COACH),true);assert.equal(benchmark(COACH),173);assert.equal(benchmark(undefined),189);
+ assert.equal(restoreDraft({ids:valid,step:0,challenge:COACH,call:{key:'passes',player:'carter'}}),null);
+ const ids=['brooks','morgan','carter'];assert.equal(restoreDraft({ids,step:1,challenge:COACH,call:{key:'passes',player:'morgan'}}).challenge,COACH);
+ assert.equal(restoreDraft({ids,step:1,challenge:COACH,call:{key:'blocks',player:'morgan'}}),null);
+ const s={stage:'done',ids,step:3,call:{key:'distance',player:'carter'}};const b={};let resets=0;
+ bindDraft(s,{root:{querySelectorAll:sel=>sel==='#draft-coach'?[b]:[],querySelector:()=>null},onRestart:()=>resets++,redraw(){},saveLine(){},clearLine(){},chime(){}});
+ b.onclick();assert.equal(resets,1);assert.deepEqual(s.ids,[]);assert.equal(s.focusKey,'passes');assert.equal(s.challenge,COACH);
+});

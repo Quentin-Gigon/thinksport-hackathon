@@ -24,12 +24,20 @@ const kit=id=>skater(id);
 const motionQuery=()=>window.matchMedia('(prefers-reduced-motion: reduce)');
 function symbol(p,i){return `<g class="ot-marker" data-marker="${i}">${p.team==='ALP'?'<circle r="13.5" class="ot-alp-kit"/>':'<path d="M-13-11h26v16l-13 9-13-9z" class="ot-col-kit"/>'}<text text-anchor="middle" dy="4" class="ot-num">${p.number}</text></g>`;}
 
+// The hub synchronously replaces its screen when a jersey is tapped. Preserve the
+// open reel's height and moment for that one replacement, without remembering it
+// across navigation or replaying animation when the fan has moved on to a pick.
+const replacements=new Map();
+
 export class ShiftScout extends (globalThis.HTMLElement??class {}){
   connectedCallback(){
     if(this._ready)return;
-    this._ready=true;this.shift=0;this.frame=0;this.playing=false;
+    this._ready=true;this.route=location.hash;const previous=replacements.get(this.route);
+    replacements.delete(this.route);this.shift=previous?.shift??0;this.frame=previous?.frame??0;this.playing=false;
     this.innerHTML=`<details class="ot-film"><summary><span class="ot-reel-icon" aria-hidden="true">▷</span><span><small>OPTIONAL · PERIOD ONE</small><strong>Scout a shift</strong></span><span class="ot-disclose" aria-hidden="true">⌄</span></summary><div class="ot-film-body"><p class="ot-film-note">Missed the period? Try these illustrated shifts. They’re fictional examples, not tracking footage or full-period results.</p><label class="ot-film-choice">Choose a shift <select>${shifts.map((s,i)=>`<option value="${i}">${s.title}</option>`).join('')}</select></label><div class="ot-film-screen"><div class="ot-film-frame"><span>◎ SCOUT CAM</span><b data-moment></b></div><svg viewBox="0 0 400 180" role="img" aria-label="Illustrated rink. Play-by-play text follows below.">${board}<g data-actors></g></svg><div class="ot-film-legend"></div></div><p class="ot-watch-focus"></p><p aria-live="polite" aria-atomic="true" class="ot-film-caption"></p><div class="ot-film-controls"><button type="button" data-back aria-label="Previous moment">←</button><button type="button" data-play></button><button type="button" data-next aria-label="Next moment">→</button></div></div></details>`;
     this.$=s=>this.querySelector(s);
+    this.$('details').open=previous?.open??false;
+    this.$('select').value=String(this.shift);
     this.$('details').ontoggle=()=>{if(!this.$('details').open)this.pause();};
     this.$('select').onchange=()=>{this.pause();this.shift=Number(this.$('select').value);this.frame=0;this.draw(true);};
     this.$('[data-back]').onclick=()=>this.step(-1);
@@ -41,7 +49,12 @@ export class ShiftScout extends (globalThis.HTMLElement??class {}){
     this._motion.addEventListener?.('change',this._change);
     this.draw(true);
   }
-  disconnectedCallback(){this.pause();document.removeEventListener('visibilitychange',this._visibility);this._motion?.removeEventListener?.('change',this._change);this._ready=false;}
+  disconnectedCallback(){
+    if(!this._ready)return;
+    const route=this.route, capture={open:this.$('details').open,shift:this.shift,frame:this.frame};
+    replacements.set(route,capture);
+    queueMicrotask(()=>{if(replacements.get(route)===capture)replacements.delete(route);});
+    this.pause();document.removeEventListener('visibilitychange',this._visibility);this._motion?.removeEventListener?.('change',this._change);this._ready=false;}
   pause(){clearInterval(this.timer);this.playing=false;if(this._ready)this.$('[data-play]').textContent=this.frame===2?'↻ Replay shift':'▷ Play shift';}
   step(direction){this.pause();this.frame=Math.max(0,Math.min(2,this.frame+direction));this.draw();}
   draw(fresh=false){
