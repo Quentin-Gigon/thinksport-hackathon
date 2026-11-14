@@ -1,6 +1,6 @@
 # Judge walkthrough
 
-The entry for review is **Head-to-Head, arena edition**. Earlier games remain in `lab.html` as development history; they are not the current proposal.
+This repository contains **Head-to-Head, arena edition** only.
 
 ## Try the public demo
 
@@ -51,7 +51,7 @@ npm test
 npm run test:arena
 ```
 
-The first command covers the arena and archived experiments. The second starts a temporary shared server and drives three separate clients through both rounds, restart recovery and final claim verification.
+The first command covers Head-to-Head rules and scoreboard behavior. The second starts a temporary shared server and drives three separate clients through both rounds, restart recovery and final claim verification.
 
 ## Source map
 

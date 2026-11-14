@@ -2,7 +2,7 @@
 
 **SIC Data-hack Challenge 2026 submission** · [Proposal](docs/submission/PROPOSAL.md) · [Judge walkthrough](docs/submission/REVIEW_GUIDE.md) · [Submission scope and evidence](docs/submission/README.md)
 
-The current proposal is **Head-to-Head**. The six-game lab further below records earlier experiments.
+This repository contains **Head-to-Head only**: the fan game, arena scoreboard, host controls and shared event server.
 
 [Fan game](https://quentin-gigon.github.io/thinksport-hackathon/#play) · [Projector scoreboard and QR](https://quentin-gigon.github.io/thinksport-hackathon/#screen) · [Private operator / public rehearsal controls](https://quentin-gigon.github.io/thinksport-hackathon/#host).
 
@@ -18,56 +18,19 @@ The current proposal is **Head-to-Head**. The six-game lab further below records
 
 The LAN event persists in ignored `.arena-local/`; use a fresh `ARENA_STORE` and `ARENA_EVENT_ID` for a new match. See `ARENA_FIXTURE_FILE` (validated private fixture outside dist), `ARENA_PRIZE` (confirmed display label), `ARENA_PORT`. `npm test` runs the rules tests; `npm run test:arena` runs three independent clients through both rounds, a restart and the prize claim. Before building Pages, run `python3 scripts/pack-offline.py` to version the static modules.
 
----
 
-# Overtime — ThinkSport prototype lab
-
-**[Open the archived six-game lab](https://quentin-gigon.github.io/thinksport-hackathon/lab.html)**
-
-Six working browser games to compare at the team's 11 November 2026 meeting. No install, account, API key or backend is needed. Public fixtures contain **fictional players and synthetic statistics**, not the supplied confidential hockey records.
-
-## Play locally
+## Run locally
 
 ```sh
+git clone https://github.com/Quentin-Gigon/thinksport-hackathon.git
+cd thinksport-hackathon
 python3 -m http.server 4173 --directory dist
 ```
 
-Open http://localhost:4173. ES modules require an HTTP server; double-clicking index.html is not supported. Any static host can serve `dist/`. External Google Fonts are optional; system font fallbacks work without internet.
+Open http://localhost:4173/#play. No frontend build or dependency install is needed. For shared play, use Node 22+ and `npm run arena`.
 
-## The six experiments
+## Source and data
 
-| Prototype | Core action | Learning | Hypothesis |
-| --- | --- | --- | --- |
-| Read the game | Answer five multiple-choice questions; reveal stats and explanations | Speed, passing, blocked shots, distance and ice time describe different contributions | Immediate explanation makes a short intermission quiz worth finishing |
-| Unsung heroes | Draft any three skaters within 50 credits; compare against the best affordable lineup | Contributions beyond goals and the trade-offs of a composite score | Building a lineup creates more ownership and replay than trivia |
-| Mystery skater | Use a roster and three progressively unlocked clues to identify a player in four guesses | Player identity can emerge from performance characteristics | A daily deduction puzzle creates a simple return habit |
-| Head-to-Head | Lock five blind two-player period-one stat comparisons | Observations help estimate hidden speed, distance, blocks, passes and usage | A close numerical reveal rewards attentive watching |
-| Against the Crowd | 2–8 fans pass one device and lock three private picks before any reveal | Popularity does not establish the correct answer | A capped minority bonus creates discussion without rewarding incorrect contrarian picks |
-| Next-Period Draft | Choose three skaters under 50 credits, then simulate period-two settlement | Blocks, completed passes and distance contribute beyond goals | A future-period lineup gives fans players to follow |
+The readable browser modules live in `dist/`; shared hosting code is in `arena-server/`. See the [source map and walkthrough](docs/submission/REVIEW_GUIDE.md), [proposal](docs/submission/PROPOSAL.md) and [source notes](docs/SOURCES.md).
 
-All games include completion, score, replay and local feedback. Games 1–3 follow the team brainstorming ideas; games 4–6 are additional experiments. See [the matchday guide](docs/MATCHDAY.md) for the replacement games and production requirements. The earlier concept scorecard describes retired experiments. Mystery uses the Europe/Zurich calendar date for the initial puzzle; practice rotates through players. Quiz is full-game recall, **not** a live prediction. Fantasy uses visible full-game stats, **not** forecasts or a validated ranking. The scoring formula and prices are shown in the game. Mystery has no AI or fabricated crowd popularity score.
-
-## Tonight's test
-
-Follow [docs/MEETING_TEST.md](docs/MEETING_TEST.md). Each person should play all six before discussing. Rate fun, clarity and desire to replay on the result screen. The test notebook stores responses in this browser only and exports JSON. Devices do not synchronize; there are no real-time rooms, accounts or shared leaderboards.
-
-## Data and confidentiality
-
-See [docs/DATA.md](docs/DATA.md) and [docs/SOURCES.md](docs/SOURCES.md). The organisers' supplied match data is confidential. Do not commit or deploy original files or private derived match records. The ignored `private-data/` directory is a place for team-only local files.
-
-For private testing, open **Data & rules**, then import a JSON array matching [docs/player-template.json](docs/player-template.json). Imported data changes games 1–3 only, stays in this tab's memory, resets on refresh and is never sent to a server. Games 4–6 use separate fictional period-one/period-two fixtures. Crowd votes are real inputs from people sharing one device. The public JavaScript still downloads normally, and the optional Google Fonts request is independent of imported content. Keep browser extensions and screen sharing in mind when handling confidential material. Feedback exports include tester-entered notes, so check those before sharing.
-
-## Verification
-
-With Node.js installed:
-
-```sh
-node --test tests/*.test.js
-node --check dist/app.js
-```
-
-Tests verify quiz answers, an independently enumerated fantasy optimum, mystery scoring, Zurich daily selection, import validation, period-one duels, minority bonuses, draft budget enforcement and future-period scoring. Legacy play-engine tests remain as regression coverage. Browser verification results are in [docs/QA.md](docs/QA.md).
-
-## Scope after selection
-
-This section describes the archived lab. The selected Head-to-Head arena now includes server-validated scoring, shared standings and period-pack uploads; see the current [proposal](docs/submission/PROPOSAL.md) and [deployment guide](arena-server/README.md). Public fixtures remain synthetic. The submission package includes proposal text and an accompanying editable deck; video production is outside the team's requested scope.
+Public players and statistics are fictional. Supplied match records are confidential and must never be committed or deployed. The operator can load authorised per-period comparisons using the [documented private upload flow](arena-server/README.md).

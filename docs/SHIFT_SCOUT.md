@@ -1,4 +1,0 @@
-# Scout a shift
-The optional first-period scout is a three-scene teaching sketch featuring the fictional exhibition roster. Select a shift, then play it or step through its three moments by hand. Shirt numbers, contrasting team shapes, an on-screen legend and plain-language play-by-play identify actors without relying on colour or motion. The animation pauses on collapse, tab hiding or unmount. Reduced-motion mode uses still poses. No sound, external assets, tracking data or generated crowd inputs.
-
-A chase, an outlet and an interrupted shot illustrate what a spectator might look for. Coordinates and outcomes are authored examples, **not reconstructed events**. No measured period figures, winning choices or forecast answers are loaded into the card; a selected moment cannot establish a whole-period ranking. For a verified match edition, source footage and equivalent commentary from authorised event records.

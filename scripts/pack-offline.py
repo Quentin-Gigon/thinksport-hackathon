@@ -3,12 +3,12 @@ from pathlib import Path
 import hashlib,json,re
 root=Path(__file__).resolve().parents[1]/'dist'
 files=sorted([p for p in root.iterdir() if p.name!='arena-worker.js' and p.suffix in {'.html','.css','.js','.svg','.json'}])
-# Pin the full ES module graph: a returning fan must never play a prior deck against a new rival target.
+# Pin the full ES module graph: keep Head-to-Head modules on the same release.
 js=[p for p in files if p.suffix=='.js']
 tag=hashlib.sha256(b''.join(p.name.encode()+p.read_bytes() for p in js)).hexdigest()[:12]
 imports={'./'+p.name:'./'+p.name+'?r='+tag for p in js}
 imports_script='<script type="importmap">'+json.dumps({'imports':imports},separators=(',',':'))+'</script>'
-for filename,entry in [('index.html','arena-app.js'),('lab.html','app.js')]:
+for filename,entry in [('index.html','arena-app.js')]:
     index=root/filename
     html=re.sub(r'<script type="importmap">.*?</script>','',index.read_text(),flags=re.S)
     html=html.replace('</head>',imports_script+'</head>')

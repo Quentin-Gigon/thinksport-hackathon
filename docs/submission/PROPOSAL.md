@@ -62,7 +62,7 @@ These channels are proposed integrations. For streaming, the operator must accou
 
 The prototype includes a plain JavaScript frontend, a persistent Node LAN server, and deployment code for a Cloudflare Worker with a SQLite Durable Object. The same rules power the shared server and local rehearsal. A protected host controls each stage and loads period packs.
 
-On 14 November, all 34 automated tests passed across the current arena and earlier experiments. The LAN integration test passed with three independent clients, both rounds, published standings, restart recovery, host protection, a single draw from two tied leaders and private claim verification.
+On 14 November, all 10 Head-to-Head automated tests passed. The LAN integration test passed with three independent clients, both rounds, published standings, restart recovery, host protection, a single draw from two tied leaders and private claim verification.
 
 The public demo remains a same-browser rehearsal. Public shared hosting, authorised data integration, stadium network testing and age-group user research remain before a real event. There is no measured audience traction or demonstrated learning gain yet.
 

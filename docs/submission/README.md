@@ -28,7 +28,7 @@ The learning explanations connect metrics to hockey actions while stating their 
 
 ## Verification on 14 November 2026
 
-- `node --test tests/*.test.js`: 34 tests passed across the arena and archived experiments.
+- `node --test tests/*.test.js`: 10 Head-to-Head tests passed.
 - `node arena-server/lan.integration.mjs`: three independent fan clients completed both breaks, published both leaderboards, resumed after a server restart and verified one final winner's private claim.
 - Browser captures at 390 × 844 show the current mobile choice and blocked-shot explanation. These are prototype screenshots, not evidence of an audience trial.
 - Public repository visibility and the live demo's HTTP response were checked.

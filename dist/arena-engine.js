@@ -1,9 +1,18 @@
 // Exhibition data for rehearsal. A Worker can instead load private period fixtures.
-import {SKATERS} from './match-engine.js';
+const PLAYERS=[
+  {id:'keller',name:'Alex Keller',number:14,team:'ALP'},
+  {id:'berger',name:'Noah Berger',number:7,team:'ALP'},
+  {id:'fischer',name:'Leo Fischer',number:28,team:'ALP'},
+  {id:'rossi',name:'Sam Rossi',number:41,team:'ALP'},
+  {id:'brooks',name:'Jamie Brooks',number:9,team:'COL'},
+  {id:'morgan',name:'Casey Morgan',number:22,team:'COL'},
+  {id:'hayes',name:'Robin Hayes',number:16,team:'COL'},
+  {id:'carter',name:'Max Carter',number:35,team:'COL'}
+];
 
 export const STAGES=['lobby','break1','leaders1','break2','leaders2','final'];
 export const DEMO_ARENA_FIXTURE={
-  players:SKATERS.map(({id,name,number,team})=>({id,name,number,team})),
+  players:PLAYERS,
   rounds:[
     [
       ['Who hit the higher top speed?','km/h','rossi',38.1,'hayes',37.4,'A burst of speed can decide who reaches a loose puck. Peak speed measures the burst, not the whole race.'],
