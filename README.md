@@ -1,5 +1,9 @@
 # Head-to-Head — the arena edition
 
+**SIC Data-hack Challenge 2026 submission** · [Proposal](docs/submission/PROPOSAL.md) · [Judge walkthrough](docs/submission/REVIEW_GUIDE.md) · [Submission scope and evidence](docs/submission/README.md)
+
+The current proposal is **Head-to-Head**. The six-game lab further below records earlier experiments.
+
 [Fan game](https://quentin-gigon.github.io/thinksport-hackathon/#play) · [Projector scoreboard and QR](https://quentin-gigon.github.io/thinksport-hackathon/#screen) · [Private operator / public rehearsal controls](https://quentin-gigon.github.io/thinksport-hackathon/#host).
 
 **One QR, two breaks, one draw.** At the first horn a fan joins with a tap and gets a generated scoreboard name. Five blind picks, 100 points each; one optional Power Play doubles a correct pick. The operator closes the round and shows the leaders. At the second horn the same QR restores that phone's entry for five different period-two calls. Combined standings follow. At the final horn the operator draws once from the highest-scoring fans who finished both breaks. Tied leaders are equally likely to win; the winner alone sees a private claim code.
@@ -66,4 +70,4 @@ Tests verify quiz answers, an independently enumerated fantasy optimum, mystery 
 
 ## Scope after selection
 
-Replace the synthetic fixture with an authorised private data service, use verified per-period snapshots for predictions, set pre-match fantasy prices, and add server-validated scoring and rooms only after choosing the concept. Preserve plain-language explanations and verify official event units before using event tracking. No submission deck or video is included in this prototype repository.
+This section describes the archived lab. The selected Head-to-Head arena now includes server-validated scoring, shared standings and period-pack uploads; see the current [proposal](docs/submission/PROPOSAL.md) and [deployment guide](arena-server/README.md). Public fixtures remain synthetic. The submission package includes proposal text and an accompanying editable deck; video production is outside the team's requested scope.
